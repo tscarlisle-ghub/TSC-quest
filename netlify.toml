@@ -1,0 +1,27 @@
+# netlify.toml — deploy config for the CMA design questionnaire
+
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+# Pretty URL: /submit → /.netlify/functions/submit
+# (the function exports `config = { path: '/submit' }` which Netlify also honors,
+#  but this redirect is a belt-and-suspenders fallback)
+[[redirects]]
+  from = "/submit"
+  to = "/.netlify/functions/submit"
+  status = 200
+  force = true
+
+# Long-cache static assets, never the HTML
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "no-cache, must-revalidate"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
