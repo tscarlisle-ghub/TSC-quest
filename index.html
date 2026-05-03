@@ -19,17 +19,19 @@
   --font-ui:      "interstate", "Helvetica Neue", sans-serif;
   --font-trajan:  "trajan-sans-pro", "trajan-pro-3", "trajan-pro", "Cinzel", "warnock-pro", Georgia, serif;
 
-  --ink:        #1c1c1a;
+  --ink:        #2e2e2e;     /* palette charcoal */
   --ink-soft:   #4a4a45;
   --ink-faint:  #7a7872;
   --rule:       #d4d2cc;
   --rule-soft:  #e8e6e0;
   --paper:      #fbfaf6;
   --paper-2:    #f4f2eb;
-  --accent:     #d04030;
-  --accent-dark:#8c2818;
+  --accent:     #8b0000;     /* palette deep red */
+  --accent-dark:#5a0000;
   --field-bg:   #ffffff;
-  --highlight:  #f6f3e8;
+  --highlight:  #fafad2;     /* palette pale goldenrod — focus glow */
+  --cream:      #ede1b1;     /* palette butter cream — selected-state fill */
+  --tan:        #cdb79e;     /* palette warm tan — section rules, soft accents */
 }
 
 * { box-sizing: border-box; }
@@ -128,14 +130,14 @@ h2 {
   font-family: var(--font-ui);
   font-weight: 300;
   font-style: normal;
-  font-size: 9px;
-  letter-spacing: 0.14em;
+  font-size: 11px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-soft);
-  line-height: 1.55;
+  line-height: 1.6;
 }
 .section-rule {
-  border-top: 1px solid var(--rule);
+  border-top: 1px solid var(--tan);
   margin: 32px 0 0;
 }
 
@@ -151,11 +153,11 @@ h2 {
   display: block;
   font-family: var(--font-ui);
   font-weight: 600;
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ink);
-  margin-bottom: 7px;
+  margin-bottom: 8px;
   line-height: 1.3;
 }
 .q-label .opt {
@@ -165,7 +167,7 @@ h2 {
   letter-spacing: 0;
   text-transform: none;
   color: var(--ink-faint);
-  font-size: 13px;
+  font-size: 14px;
   margin-left: 4px;
 }
 .q-label .req { color: var(--accent); margin-left: 3px; font-weight: normal; }
@@ -207,7 +209,7 @@ input[type="text"], input[type="email"], input[type="tel"], input[type="url"], i
   transition: border-color 0.12s, background 0.12s;
 }
 input:focus, select:focus, textarea:focus {
-  border-bottom: 1px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
   background: var(--highlight);
 }
 input::placeholder, textarea::placeholder {
@@ -226,7 +228,7 @@ textarea {
   font-size: 18px;
   line-height: 1.55;
 }
-textarea:focus { border-color: var(--accent); background: var(--highlight); }
+textarea:focus { border-color: var(--accent); border-width: 2px; background: var(--highlight); }
 select {
   background-color: var(--field-bg);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%231c1c1a' stroke-width='1.2' fill='none'/%3E%3C/svg%3E");
@@ -263,7 +265,10 @@ select {
 }
 .chip:hover { color: var(--ink); }
 .chip input { display: none; }
-.chip.selected { color: var(--ink); font-weight: 600; }
+.chip.selected {
+  color: var(--accent);
+  font-weight: 700;
+}
 .chip.selected::after {
   content: "·";
   color: var(--accent);
@@ -274,9 +279,12 @@ select {
 /* ── STYLE CARDS ────────────────────────────────────────────────────────── */
 .styles { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 28px; }
 @media (max-width: 720px) { .styles { grid-template-columns: 1fr; } }
-.style { cursor: pointer; padding: 8px 0 10px; border-bottom: 1px solid var(--rule-soft); position: relative; }
+.style { cursor: pointer; padding: 8px 12px 10px; border-bottom: 1px solid var(--rule-soft); position: relative; transition: background 0.12s; }
 .style:hover { border-bottom-color: var(--ink-soft); }
-.style.selected { border-bottom: 1px solid var(--accent); }
+.style.selected {
+  border-bottom: 1px solid var(--accent);
+}
+.style.selected .style-title { color: var(--accent); font-weight: 700; }
 .style.selected::before {
   content: "✓";
   position: absolute;
@@ -312,7 +320,10 @@ select {
 }
 .space:hover { color: var(--ink); }
 .space input { display: none; }
-.space.selected { color: var(--ink); font-weight: 600; }
+.space.selected {
+  color: var(--accent);
+  font-weight: 700;
+}
 .space.selected::before { content: "✓ "; color: var(--accent); font-weight: bold; }
 .space:not(.selected)::before { content: "  "; letter-spacing: 0; }
 
@@ -327,7 +338,11 @@ select {
   border-bottom: 1px solid transparent;
 }
 .budget-item:hover { color: var(--ink); }
-.budget-item.selected { color: var(--ink); font-weight: 600; border-bottom-color: var(--accent); }
+.budget-item.selected {
+  color: var(--accent);
+  font-weight: 700;
+  border-bottom-color: var(--accent);
+}
 .budget-item input { display: none; }
 
 /* ── ACTIONS ────────────────────────────────────────────────────────────── */
@@ -354,7 +369,7 @@ select {
   color: var(--ink-soft);
   transition: all 0.15s;
 }
-.action-btn:hover { border-color: var(--ink); color: var(--ink); background: var(--paper-2); }
+.action-btn:hover { border-color: var(--ink); color: var(--ink); background: var(--cream); }
 .action-btn.primary {
   background: var(--ink);
   color: var(--paper);
@@ -386,11 +401,64 @@ footer {
 }
 footer .accent { color: var(--accent); }
 
+/* ── DOC HEAD: date stamp + friendly intro under the masthead ───────────── */
+.doc-head {
+  max-width: 1080px;
+  margin: 0 auto 36px;
+  padding: 0 40px;
+}
+.doc-stamp {
+  font-family: var(--font-ui);
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 14px;
+}
+.doc-intro {
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 880px;
+  margin-left: 0;
+}
+.doc-intro em { color: var(--ink); font-style: italic; }
+
+/* ── MAP LINK — appears below the project-location field as you type ───── */
+.map-link {
+  display: inline-block;
+  margin-top: 10px;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+}
+.map-link:hover { color: var(--accent-dark); }
+.map-link[hidden] { display: none; }
+
+/* Top action row matches the bottom but flows tighter and below the intro */
+.action-row.top {
+  margin-top: 18px;
+  padding-top: 0;
+  border-top: none;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 22px;
+  margin-bottom: 36px;
+  margin-left: 0;
+}
+
 /* ── CALLOUT — used to highlight the cost-estimator link in §Budget ─────── */
 .q-callout {
   margin: 4px 0 28px;
-  padding: 14px 18px;
-  background: var(--paper-2);
+  padding: 16px 20px;
+  background: var(--cream);
   border-left: 3px solid var(--accent);
   font-family: var(--font-body);
   font-size: 15px;
@@ -464,6 +532,18 @@ footer .accent { color: var(--accent); }
   </div>
 </header>
 
+<div class="doc-head">
+  <div class="doc-stamp" id="doc-stamp">&nbsp;</div>
+  <div class="doc-intro">
+    Welcome &mdash; and thank you for taking the time. <em>This is just a starting point &mdash; a way for us to get a feel for what you're after.</em> Nothing here is meant to be a final answer; it's the opening of our conversation. The more honest and specific you can be, the more we'll have to work with when we sit down together. Type as much or as little as you'd like in any field, skip anything that doesn't apply, and use the box at the very top for anything we forgot to ask. As you fill it in, your answers save automatically to a unique link in the address bar &mdash; when you're done, click <em>Send back to Scott</em> to email it back. There's no clock running.
+  </div>
+  <div class="action-row top">
+    <button class="action-btn primary" data-action="email" type="button">Send back to Scott</button>
+    <button class="action-btn" data-action="share" type="button">Copy share link</button>
+    <button class="action-btn" data-action="download" type="button">Download answers</button>
+  </div>
+</div>
+
 <div class="page">
 <article>
 
@@ -523,6 +603,7 @@ footer .accent { color: var(--accent); }
       <label class="q-label" for="q-address">Project location</label>
       <span class="sidenote">Street address if known, otherwise neighborhood or general area.</span>
       <input type="text" id="q-address" placeholder="Address or general area">
+      <a id="q-address-map" class="map-link" href="#" target="_blank" rel="noopener" hidden>View on Google Maps &rarr;</a>
     </div>
   </section>
 
@@ -551,7 +632,18 @@ footer .accent { color: var(--accent); }
         <label class="chip"><input type="checkbox" value="Host overnight guests often"> Host overnight guests often</label>
         <label class="chip"><input type="checkbox" value="Serious cooks"> Serious cooks</label>
         <label class="chip"><input type="checkbox" value="Kitchen is the heart of our home"> Kitchen is the heart of our home</label>
+        <label class="chip"><input type="checkbox" value="Children at home"> Children at home</label>
+        <label class="chip"><input type="checkbox" value="Pets in the home"> Pets in the home</label>
+        <label class="chip"><input type="checkbox" value="Avid gardeners"> Avid gardeners</label>
+        <label class="chip"><input type="checkbox" value="Hunters or fishers"> Hunters or fishers</label>
         <label class="chip"><input type="checkbox" value="Active outdoors"> Active outdoors</label>
+        <label class="chip"><input type="checkbox" value="Frequent travelers"> Frequent travelers</label>
+        <label class="chip"><input type="checkbox" value="Avid readers / library"> Avid readers / library</label>
+        <label class="chip"><input type="checkbox" value="Music or instruments at home"> Music or instruments</label>
+        <label class="chip"><input type="checkbox" value="Hobbies that need a workspace"> Hobby workspace (woodworking, art, sewing)</label>
+        <label class="chip"><input type="checkbox" value="Home gym or fitness"> Home gym / fitness</label>
+        <label class="chip"><input type="checkbox" value="Wine collectors"> Wine collectors</label>
+        <label class="chip"><input type="checkbox" value="Faith life at home (chapel, prayer space)"> Faith life at home</label>
         <label class="chip"><input type="checkbox" value="Multi-generational household"> Multi-generational</label>
         <label class="chip"><input type="checkbox" value="Quiet, private home life"> Quiet, private home life</label>
       </div>
@@ -586,8 +678,10 @@ footer .accent { color: var(--accent); }
           <div class="chips" data-radio="stories">
             <label class="chip"><input type="radio" name="stories" value="One"> One</label>
             <label class="chip"><input type="radio" name="stories" value="Two"> Two</label>
-            <label class="chip"><input type="radio" name="stories" value="Three"> Three</label>
             <label class="chip"><input type="radio" name="stories" value="Open"> Open</label>
+          </div>
+          <div class="chips" id="addons-chips" style="margin-top: 10px;">
+            <label class="chip"><input type="checkbox" value="Basement"> + Basement</label>
           </div>
         </div>
       </div>
@@ -611,48 +705,6 @@ footer .accent { color: var(--accent); }
       <label class="q-label" for="q-sustainability">Energy and sustainability priorities</label>
       <span class="sidenote">Solar, geothermal, EV charging, passive design, certified rating &mdash; non-negotiable, nice-to-have, or just curious?</span>
       <textarea id="q-sustainability" placeholder="EV charging is a must; would consider solar if payback makes sense..."></textarea>
-    </div>
-  </section>
-
-  <div class="section-rule"></div>
-
-  <section>
-    <div class="section-header">
-      <h2>Character</h2>
-      <span class="section-note">we care more about how a home <em>feels</em> than what category it falls into</span>
-    </div>
-    <div class="q">
-      <label class="q-label">Which resonate <span class="opt">(any number)</span></label>
-      <div class="styles">
-        <div class="style"><div class="style-title">Timeless Traditional</div><div class="style-desc">Classical proportion, restraint, permanence. Built to age gracefully.</div></div>
-        <div class="style"><div class="style-title">New Old</div><div class="style-desc">Classical with a contemporary sensibility &mdash; warmth and craft with a modern eye.</div></div>
-        <div class="style"><div class="style-title">Shingle Style</div><div class="style-desc">Asymmetry, complex rooflines, natural materials, American vernacular charm.</div></div>
-        <div class="style"><div class="style-title">European Farmhouse</div><div class="style-desc">Plaster, aged stone, simple massing with a rural European sensibility.</div></div>
-        <div class="style"><div class="style-title">Arts &amp; Crafts</div><div class="style-desc">Handmade quality, honest materials, low eaves, human scale.</div></div>
-        <div class="style"><div class="style-title">Modern Transitional</div><div class="style-desc">Clean lines, open plan, but warm &mdash; not cold or industrial.</div></div>
-        <div class="style"><div class="style-title">Coastal / Lowcountry</div><div class="style-desc">Porches, natural ventilation, raised structures, easy living.</div></div>
-        <div class="style"><div class="style-title">I'll know it when I see it</div><div class="style-desc">I have images and references that communicate it better than words.</div></div>
-      </div>
-    </div>
-    <div class="q">
-      <label class="q-label" for="q-style-words">In your own words</label>
-      <span class="sidenote">"Warm." "Lived-in." "Serious but not stiff." Whatever feels true.</span>
-      <textarea id="q-style-words" placeholder="Timeless. Warm materials. Detailed but not fussy..."></textarea>
-    </div>
-    <div class="q">
-      <label class="q-label" for="q-references">Homes, places, or rooms you admire</label>
-      <span class="sidenote">Specific houses, architects, neighborhoods, hotels.</span>
-      <textarea id="q-references" placeholder="The Lutyens country houses..."></textarea>
-    </div>
-    <div class="q">
-      <label class="q-label" for="q-imagery">Imagery you've collected</label>
-      <span class="sidenote">Pinterest boards, Instagram saves, a folder of photos, magazine clippings &mdash; share links or names of boards we should look at.</span>
-      <textarea id="q-imagery" placeholder="https://www.pinterest.com/...&#10;@account_we_follow on Instagram&#10;A Dropbox folder, Google Drive, etc."></textarea>
-    </div>
-    <div class="q">
-      <label class="q-label" for="q-avoid">What to avoid</label>
-      <span class="sidenote">Just as useful as what you love.</span>
-      <textarea id="q-avoid" placeholder="Anything trendy. McMansion proportions..."></textarea>
     </div>
   </section>
 
@@ -751,6 +803,112 @@ footer .accent { color: var(--accent); }
 
   <section>
     <div class="section-header">
+      <h2>Character</h2>
+      <span class="section-note">we care more about how a home <em>feels</em> than what category it falls into</span>
+    </div>
+    <div class="q">
+      <label class="q-label">Which resonate <span class="opt">(any number)</span></label>
+      <div class="styles">
+        <div class="style"><div class="style-title">Timeless Traditional</div><div class="style-desc">Classical proportion, restraint, permanence. Built to age gracefully.</div></div>
+        <div class="style"><div class="style-title">New Old</div><div class="style-desc">Classical with a contemporary sensibility &mdash; warmth and craft with a modern eye.</div></div>
+        <div class="style"><div class="style-title">Shingle Style</div><div class="style-desc">Asymmetry, complex rooflines, natural materials, American vernacular charm.</div></div>
+        <div class="style"><div class="style-title">European Farmhouse</div><div class="style-desc">Plaster, aged stone, simple massing with a rural European sensibility.</div></div>
+        <div class="style"><div class="style-title">Arts &amp; Crafts</div><div class="style-desc">Handmade quality, honest materials, low eaves, human scale.</div></div>
+        <div class="style"><div class="style-title">Modern Transitional</div><div class="style-desc">Clean lines, open plan, but warm &mdash; not cold or industrial.</div></div>
+        <div class="style"><div class="style-title">Coastal / Lowcountry</div><div class="style-desc">Porches, natural ventilation, raised structures, easy living.</div></div>
+        <div class="style"><div class="style-title">I'll know it when I see it</div><div class="style-desc">I have images and references that communicate it better than words.</div></div>
+      </div>
+    </div>
+    <div class="q">
+      <label class="q-label" for="q-style-words">In your own words</label>
+      <span class="sidenote">"Warm." "Lived-in." "Serious but not stiff." Whatever feels true.</span>
+      <textarea id="q-style-words" placeholder="Timeless. Warm materials. Detailed but not fussy..."></textarea>
+    </div>
+    <div class="q">
+      <label class="q-label">Words that describe the aesthetic <span class="opt">(check what fits)</span></label>
+      <span class="sidenote">Pick anything that resonates &mdash; opposites are fine if both feel true in different rooms.</span>
+      <div class="chips" id="aesthetic-chips">
+        <label class="chip"><input type="checkbox" value="Warm"> Warm</label>
+        <label class="chip"><input type="checkbox" value="Cool"> Cool</label>
+        <label class="chip"><input type="checkbox" value="Light-filled"> Light-filled</label>
+        <label class="chip"><input type="checkbox" value="Moody"> Moody</label>
+        <label class="chip"><input type="checkbox" value="Cocooned"> Cocooned</label>
+        <label class="chip"><input type="checkbox" value="Open"> Open</label>
+        <label class="chip"><input type="checkbox" value="Formal"> Formal</label>
+        <label class="chip"><input type="checkbox" value="Casual"> Casual</label>
+        <label class="chip"><input type="checkbox" value="Refined"> Refined</label>
+        <label class="chip"><input type="checkbox" value="Rustic"> Rustic</label>
+        <label class="chip"><input type="checkbox" value="Layered"> Layered</label>
+        <label class="chip"><input type="checkbox" value="Quiet / spare"> Quiet / spare</label>
+        <label class="chip"><input type="checkbox" value="Modern"> Modern</label>
+        <label class="chip"><input type="checkbox" value="Traditional"> Traditional</label>
+        <label class="chip"><input type="checkbox" value="Timeless"> Timeless</label>
+        <label class="chip"><input type="checkbox" value="Eclectic"> Eclectic</label>
+        <label class="chip"><input type="checkbox" value="Organic"> Organic</label>
+        <label class="chip"><input type="checkbox" value="Ordered / geometric"> Ordered / geometric</label>
+        <label class="chip"><input type="checkbox" value="Romantic"> Romantic</label>
+        <label class="chip"><input type="checkbox" value="Practical"> Practical</label>
+        <label class="chip"><input type="checkbox" value="Soft"> Soft</label>
+        <label class="chip"><input type="checkbox" value="Crisp"> Crisp</label>
+        <label class="chip"><input type="checkbox" value="Textured"> Textured</label>
+        <label class="chip"><input type="checkbox" value="Heirloom / collected"> Heirloom / collected</label>
+        <label class="chip"><input type="checkbox" value="Patinaed"> Patinaed</label>
+        <label class="chip"><input type="checkbox" value="Lived-in"> Lived-in</label>
+        <label class="chip"><input type="checkbox" value="Serene"> Serene</label>
+        <label class="chip"><input type="checkbox" value="Bold"> Bold</label>
+      </div>
+    </div>
+    <div class="q">
+      <label class="q-label" for="q-references">Homes, places, or rooms you admire</label>
+      <span class="sidenote">Specific houses, neighborhoods, hotels, rooms that stay with you.</span>
+      <textarea id="q-references" placeholder="The Lutyens country houses..."></textarea>
+    </div>
+    <div class="q">
+      <label class="q-label" for="q-imagery">Imagery you've collected</label>
+      <span class="sidenote">Pinterest boards, Instagram saves, a folder of photos, magazine clippings &mdash; share links or names of boards we should look at.</span>
+      <textarea id="q-imagery" placeholder="https://www.pinterest.com/...&#10;@account_we_follow on Instagram&#10;A Dropbox folder, Google Drive, etc."></textarea>
+    </div>
+    <div class="q">
+      <label class="q-label" for="q-avoid">What to avoid</label>
+      <span class="sidenote">Just as useful as what you love.</span>
+      <textarea id="q-avoid"></textarea>
+    </div>
+    <div class="q">
+      <label class="q-label">Interior materials <span class="opt">(check anything that appeals)</span></label>
+      <span class="sidenote">A starting palette &mdash; we'll refine as we go. Plaster walls feel different from painted drywall; wood ceilings change a room entirely.</span>
+      <div class="chips" id="materials-interior-chips">
+        <label class="chip"><input type="checkbox" value="Plaster walls"> Plaster walls</label>
+        <label class="chip"><input type="checkbox" value="Wood paneling"> Wood paneling</label>
+        <label class="chip"><input type="checkbox" value="Wood ceilings"> Wood ceilings</label>
+      </div>
+    </div>
+    <div class="q">
+      <label class="q-label" for="q-specialty-finishes">Specialty finishes</label>
+      <span class="sidenote">Anything beyond the basics &mdash; Venetian plaster, lime wash, custom millwork, hand-troweled, encaustic tile, exposed beams. Don't worry about being technical.</span>
+      <textarea id="q-specialty-finishes" placeholder="Lime-washed plaster in the entry, reclaimed wood beams in the keeping room..."></textarea>
+    </div>
+    <div class="q">
+      <label class="q-label">Exterior materials <span class="opt">(check what feels right)</span></label>
+      <span class="sidenote">Some of these read very differently in person &mdash; reclaimed brick has a softness new brick can't match; a slate roof costs many times what asphalt does. Mark anything that resonates.</span>
+      <div class="chips" id="materials-exterior-chips">
+        <label class="chip"><input type="checkbox" value="Brick"> Brick</label>
+        <label class="chip"><input type="checkbox" value="Painted brick"> Painted brick</label>
+        <label class="chip"><input type="checkbox" value="Reclaimed brick"> Reclaimed brick</label>
+        <label class="chip"><input type="checkbox" value="Stone"> Stone</label>
+        <label class="chip"><input type="checkbox" value="Limestone details"> Limestone details</label>
+        <label class="chip"><input type="checkbox" value="Wood siding"> Wood siding</label>
+        <label class="chip"><input type="checkbox" value="Wood roof"> Wood roof</label>
+        <label class="chip"><input type="checkbox" value="Slate roof"> Slate roof</label>
+        <label class="chip"><input type="checkbox" value="Asphalt roof"> Asphalt roof</label>
+        <label class="chip"><input type="checkbox" value="Metal roof (where appropriate)"> Metal roof <span class="opt">(where appropriate)</span></label>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-rule"></div>
+
+  <section>
+    <div class="section-header">
       <h2>The Site</h2>
       <span class="section-note">as much a part of the design as the house itself</span>
     </div>
@@ -768,6 +926,60 @@ footer .accent { color: var(--accent); }
       <label class="q-label" for="q-arrival">Arrival and outdoor living</label>
       <span class="sidenote">Where's the driveway? Family entrance vs. front door? What outdoor spaces matter, and how do they connect to the inside?</span>
       <textarea id="q-arrival" placeholder="Motor court with porte-cochère; family entrance through the mudroom..."></textarea>
+    </div>
+  </section>
+
+  <div class="section-rule"></div>
+
+  <section>
+    <div class="section-header">
+      <h2>Outbuildings &amp; Grounds</h2>
+      <span class="section-note">how much of the project lives <em>outside</em> the four walls</span>
+    </div>
+    <div class="q">
+      <label class="q-label">How worked is the landscape?</label>
+      <span class="sidenote">A rough sense of intensity &mdash; a lawn and a few trees is very different from a layered garden with hardscape and outdoor rooms. Pick whichever is closest; we'll refine with a landscape architect.</span>
+      <div class="budget" data-radio="landscape_intensity">
+        <label class="budget-item"><input type="radio" name="landscape_intensity" value="Minimal — lawn, foundation planting, a few trees">Minimal &mdash; lawn, foundation planting, a few trees</label>
+        <label class="budget-item"><input type="radio" name="landscape_intensity" value="Moderate — defined beds, terraces, considered arrival">Moderate &mdash; defined beds, terraces, considered arrival</label>
+        <label class="budget-item"><input type="radio" name="landscape_intensity" value="Full — outdoor rooms, hardscape, designed garden">Full &mdash; outdoor rooms, hardscape, designed garden</label>
+        <label class="budget-item"><input type="radio" name="landscape_intensity" value="Estate-level — extensive grounds, garden structures, axes and vistas">Estate-level &mdash; extensive grounds, garden structures, axes and vistas</label>
+        <label class="budget-item"><input type="radio" name="landscape_intensity" value="Not sure yet">Not sure yet</label>
+      </div>
+    </div>
+    <div class="q">
+      <label class="q-label">On the grounds <span class="opt">(check anything you'd like to consider)</span></label>
+      <span class="sidenote">Even a maybe is useful &mdash; a pool location set late is a pool location set badly.</span>
+      <div class="chips" id="grounds-chips">
+        <label class="chip"><input type="checkbox" value="Pool"> Pool</label>
+        <label class="chip"><input type="checkbox" value="Spa / hot tub"> Spa / hot tub</label>
+        <label class="chip"><input type="checkbox" value="Vegetable garden"> Vegetable garden</label>
+        <label class="chip"><input type="checkbox" value="Cutting garden"> Cutting garden</label>
+        <label class="chip"><input type="checkbox" value="Greenhouse"> Greenhouse</label>
+        <label class="chip"><input type="checkbox" value="Potting shed"> Potting shed</label>
+        <label class="chip"><input type="checkbox" value="Workshop"> Workshop</label>
+        <label class="chip"><input type="checkbox" value="Outdoor kitchen / grill"> Outdoor kitchen / grill</label>
+        <label class="chip"><input type="checkbox" value="Outdoor fireplace"> Outdoor fireplace</label>
+        <label class="chip"><input type="checkbox" value="Sport court"> Sport court</label>
+        <label class="chip"><input type="checkbox" value="Chicken coop"> Chicken coop</label>
+      </div>
+    </div>
+    <div class="q">
+      <label class="q-label">Outbuildings <span class="opt">(check anything that may be in scope)</span></label>
+      <span class="sidenote">Detached structures change a project's footprint and budget materially &mdash; worth flagging early even if uncertain.</span>
+      <div class="chips" id="outbuildings-chips">
+        <label class="chip"><input type="checkbox" value="Freestanding garage"> Freestanding garage</label>
+        <label class="chip"><input type="checkbox" value="Guest house / casita"> Guest house / casita</label>
+        <label class="chip"><input type="checkbox" value="Pool house"> Pool house</label>
+        <label class="chip"><input type="checkbox" value="Garage with apartment above"> Garage with apartment above</label>
+        <label class="chip"><input type="checkbox" value="Studio / office outbuilding"> Studio / office outbuilding</label>
+        <label class="chip"><input type="checkbox" value="Barn"> Barn</label>
+      </div>
+    </div>
+    <div class="q">
+      <label class="q-label" for="q-grounds-notes">Anything else about the grounds?</label>
+      <span class="sidenote">A specific tree to save, a view to frame, an existing structure to keep or remove, who maintains it all.</span>
+      <textarea id="q-grounds-notes" placeholder="The two oaks at the rear corner stay. We'd reuse the old smokehouse if it can be saved..."></textarea>
     </div>
   </section>
 
@@ -840,9 +1052,9 @@ footer .accent { color: var(--accent); }
   </section>
 
   <div class="action-row">
-    <button class="action-btn primary" id="email-btn" type="button">Send back to Scott</button>
-    <button class="action-btn" id="share-btn" type="button">Copy share link</button>
-    <button class="action-btn" id="download-btn" type="button">Download answers</button>
+    <button class="action-btn primary" data-action="email" type="button">Send back to Scott</button>
+    <button class="action-btn" data-action="share" type="button">Copy share link</button>
+    <button class="action-btn" data-action="download" type="button">Download answers</button>
   </div>
   <div class="action-status" id="action-status"></div>
 
@@ -914,15 +1126,20 @@ function collect() {
     project_type: radio('type'),
     sqft: val('q-sqft'),
     stories: radio('stories'),
+    addons: checks('#addons-chips'),
     builder: val('q-builder'),
     interior_designer: val('q-interior-designer'),
     landscape_architect: val('q-landscape-architect'),
     sustainability: val('q-sustainability'),
     style_cards: styleCards,
+    aesthetic_concepts: checks('#aesthetic-chips'),
     style_words: val('q-style-words'),
     references: val('q-references'),
     imagery: val('q-imagery'),
     avoid: val('q-avoid'),
+    materials_interior: checks('#materials-interior-chips'),
+    materials_exterior: checks('#materials-exterior-chips'),
+    specialty_finishes: val('q-specialty-finishes'),
     bedrooms: val('q-bedrooms'),
     primary_bedroom: val('q-primary'),
     bathrooms: radio('baths'),
@@ -934,6 +1151,10 @@ function collect() {
     site_best: val('q-site-best'),
     site_worst_and_constraints: val('q-site-worst'),
     arrival_and_outdoor: val('q-arrival'),
+    landscape_intensity: radio('landscape_intensity'),
+    grounds: checks('#grounds-chips'),
+    outbuildings: checks('#outbuildings-chips'),
+    grounds_notes: val('q-grounds-notes'),
     budget: radio('budget'),
     construction_start: val('q-start'),
     target_movein: val('q-movein'),
@@ -958,24 +1179,31 @@ function apply(d) {
   setText('q-sustainability', d.sustainability);
   setText('q-style-words', d.style_words); setText('q-references', d.references);
   setText('q-imagery', d.imagery); setText('q-avoid', d.avoid);
+  setText('q-specialty-finishes', d.specialty_finishes);
   setText('q-bedrooms', d.bedrooms); setText('q-primary', d.primary_bedroom);
   setText('q-key-spaces', d.key_spaces); setText('q-storage', d.storage);
   setText('q-heirlooms', d.heirlooms); setText('q-aging', d.aging);
   setText('q-site-best', d.site_best); setText('q-site-worst', d.site_worst_and_constraints);
-  setText('q-arrival', d.arrival_and_outdoor); setText('q-start', d.construction_start);
+  setText('q-arrival', d.arrival_and_outdoor); setText('q-grounds-notes', d.grounds_notes);
+  setText('q-start', d.construction_start);
   setText('q-movein', d.target_movein); setText('q-priority', d.priority);
   setText('q-concerns', d.concerns); setText('q-feeling', d.feeling); setText('q-other', d.other);
 
-  document.querySelectorAll('#lifestyle-chips input[type="checkbox"]').forEach(el => {
-    const should = Array.isArray(d.lifestyle) && d.lifestyle.includes(el.value);
-    el.checked = should;
-    el.closest('label').classList.toggle('selected', should);
-  });
-  document.querySelectorAll('#spaces input[type="checkbox"]').forEach(el => {
-    const should = Array.isArray(d.spaces) && d.spaces.includes(el.value);
-    el.checked = should;
-    el.closest('label').classList.toggle('selected', should);
-  });
+  const setMulti = (containerSel, values) => {
+    document.querySelectorAll(containerSel + ' input[type="checkbox"]').forEach(el => {
+      const should = Array.isArray(values) && values.includes(el.value);
+      el.checked = should;
+      el.closest('label').classList.toggle('selected', should);
+    });
+  };
+  setMulti('#lifestyle-chips', d.lifestyle);
+  setMulti('#aesthetic-chips', d.aesthetic_concepts);
+  setMulti('#addons-chips',    d.addons);
+  setMulti('#spaces',          d.spaces);
+  setMulti('#materials-interior-chips', d.materials_interior);
+  setMulti('#materials-exterior-chips', d.materials_exterior);
+  setMulti('#grounds-chips',   d.grounds);
+  setMulti('#outbuildings-chips', d.outbuildings);
   const setRadio = (name, value) => {
     document.querySelectorAll(`input[name="${name}"]`).forEach(el => {
       const on = el.value === value;
@@ -986,6 +1214,7 @@ function apply(d) {
   };
   setRadio('type', d.project_type); setRadio('stories', d.stories);
   setRadio('baths', d.bathrooms);   setRadio('budget', d.budget);
+  setRadio('landscape_intensity', d.landscape_intensity);
   document.querySelectorAll('.style').forEach(card => {
     const title = card.querySelector('.style-title').textContent.trim();
     card.classList.toggle('selected', Array.isArray(d.style_cards) && d.style_cards.includes(title));
@@ -1044,8 +1273,8 @@ function asMarkdown(d) {
   if (d.notes && d.notes.trim()) out += `OPENING NOTES\n${d.notes.trim()}\n\n`;
   out += `CONTACT\n` + line('Name', d.name) + line('Partner', d.partner) + line('Email', d.email) + line('Phone', d.phone) + line('Partner email', d.partner_email) + line('Partner phone', d.partner_phone) + line('Location', d.address);
   out += `\nLIFE\n` + line('Household', d.household) + line('Weekly rhythm', d.rhythm) + line('Lifestyle', d.lifestyle);
-  out += `\nPROJECT\n` + line('Type', d.project_type) + line('Sqft', d.sqft) + line('Stories', d.stories) + line('Builder', d.builder) + line('Interior designer', d.interior_designer) + line('Landscape architect', d.landscape_architect) + line('Sustainability', d.sustainability);
-  out += `\nCHARACTER\n` + line('Styles', d.style_cards) + line('In their words', d.style_words) + line('References', d.references) + line('Imagery', d.imagery) + line('Avoid', d.avoid);
+  out += `\nPROJECT\n` + line('Type', d.project_type) + line('Sqft', d.sqft) + line('Stories', d.stories) + line('Add-ons', d.addons) + line('Builder', d.builder) + line('Interior designer', d.interior_designer) + line('Landscape architect', d.landscape_architect) + line('Sustainability', d.sustainability);
+  out += `\nCHARACTER\n` + line('Styles', d.style_cards) + line('Aesthetic concepts', d.aesthetic_concepts) + line('In their words', d.style_words) + line('References', d.references) + line('Imagery', d.imagery) + line('Avoid', d.avoid);
   out += `\nSPACES\n` + line('Bedrooms', d.bedrooms) + line('Primary', d.primary_bedroom) + line('Bathrooms', d.bathrooms) + line('Spaces', d.spaces) + line('Key spaces', d.key_spaces) + line('Storage', d.storage) + line('Heirlooms', d.heirlooms) + line('Aging-in-place', d.aging);
   out += `\nSITE\n` + line('Best', d.site_best) + line('Challenges', d.site_worst_and_constraints) + line('Arrival/outdoor', d.arrival_and_outdoor);
   out += `\nBUDGET & TIMELINE\n` + line('Budget', d.budget) + line('Start', d.construction_start) + line('Move-in', d.target_movein);
@@ -1124,9 +1353,41 @@ function downloadJSON() {
   setStatus(`Downloaded ${filename}.`, 'ok');
 }
 
-document.getElementById('email-btn').addEventListener('click', sendToScott);
-document.getElementById('share-btn').addEventListener('click', copyShareLink);
-document.getElementById('download-btn').addEventListener('click', downloadJSON);
+document.querySelectorAll('[data-action="email"]').forEach(b => b.addEventListener('click', sendToScott));
+document.querySelectorAll('[data-action="share"]').forEach(b => b.addEventListener('click', copyShareLink));
+document.querySelectorAll('[data-action="download"]').forEach(b => b.addEventListener('click', downloadJSON));
+
+/* ═══════════════════════════════════════════════════════════════════════
+   DATE STAMP at the top of the document — current local date/time
+   ═══════════════════════════════════════════════════════════════════════ */
+function updateDocStamp() {
+  const el = document.getElementById('doc-stamp');
+  if (!el) return;
+  const d = new Date();
+  const dateOpts = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+  const timeOpts = { hour: 'numeric', minute: '2-digit' };
+  el.textContent = d.toLocaleDateString(undefined, dateOpts) + ' · ' + d.toLocaleTimeString(undefined, timeOpts);
+}
+updateDocStamp();
+setInterval(updateDocStamp, 60000);
+
+/* ═══════════════════════════════════════════════════════════════════════
+   GOOGLE MAPS link — lives below the project-location field; updates as
+   the user types so they can pop the address open in a new tab.
+   ═══════════════════════════════════════════════════════════════════════ */
+(function () {
+  const addr = document.getElementById('q-address');
+  const lnk  = document.getElementById('q-address-map');
+  if (!addr || !lnk) return;
+  function refresh() {
+    const v = (addr.value || '').trim();
+    if (v.length < 3) { lnk.hidden = true; return; }
+    lnk.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(v);
+    lnk.hidden = false;
+  }
+  addr.addEventListener('input', refresh);
+  refresh();
+})();
 
 /* ═══════════════════════════════════════════════════════════════════════
    AUTO-FORMAT PHONE NUMBERS as the user types — (XXX) XXX-XXXX
