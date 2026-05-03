@@ -521,9 +521,47 @@ footer .accent { color: var(--accent); }
   h2 { font-size: 22px; }
   input[type="text"], input[type="email"], input[type="tel"], input[type="url"], input[type="number"], select, textarea { font-size: 20px; }
 }
+.welcome-modal { position: fixed; inset: 0; z-index: 1000; background: rgba(20,18,14,0.55); display: flex; align-items: center; justify-content: center; padding: 24px; font-family: var(--font-body); animation: welcome-fade-in 0.18s ease-out; }
+.welcome-modal[hidden] { display: none; }
+@keyframes welcome-fade-in { from { opacity: 0; } to { opacity: 1; } }
+.welcome-card { background: var(--paper); border: 1px solid var(--ink); max-width: 540px; width: 100%; padding: 36px 40px 30px; box-shadow: 0 14px 40px rgba(0,0,0,0.28); }
+.welcome-card h2 { font-family: var(--font-trajan); font-size: 26px; letter-spacing: 0.04em; text-transform: uppercase; margin: 0 0 8px; color: var(--ink); border-bottom: none; padding-bottom: 0; }
+.welcome-lede { font-style: italic; color: var(--ink-soft); margin: 0 0 18px; font-size: 17px; line-height: 1.45; }
+.welcome-body { font-size: 17px; line-height: 1.55; color: var(--ink); margin: 0 0 22px; }
+.welcome-row { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 8px; }
+.welcome-label { display: block; font-family: var(--font-ui); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 4px; }
+.welcome-card input[type="text"] { width: 100%; font-family: var(--font-body); font-size: 19px; padding: 8px 0; border: none; border-bottom: 1px solid var(--ink-soft); background: transparent; color: var(--ink); border-radius: 0; }
+.welcome-card input[type="text"]:focus { outline: none; border-bottom: 2px solid var(--accent); }
+.welcome-error { color: var(--accent); font-style: italic; font-size: 14px; min-height: 20px; margin: 6px 0 8px; }
+.welcome-actions { display: flex; justify-content: flex-end; margin-top: 6px; }
+@media (max-width: 520px) { .welcome-card { padding: 28px 22px 22px; } .welcome-row { grid-template-columns: 1fr; gap: 14px; } .welcome-card h2 { font-size: 22px; } }
 </style>
 </head>
 <body>
+
+<div id="welcome-modal" class="welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-title" hidden>
+  <div class="welcome-card">
+    <h2 id="welcome-title">Carlisle Moore Architects</h2>
+    <p class="welcome-lede">Before we begin &mdash; just your name, so this becomes <em>your</em> questionnaire.</p>
+    <p class="welcome-body">From this point on, your answers save automatically to a unique link in the address bar. You can close this tab and come back anytime; just keep the link. <em>This is only a starting point</em> &mdash; we'll fill in the rest of the picture together.</p>
+    <form id="welcome-form" novalidate>
+      <div class="welcome-row">
+        <div>
+          <label class="welcome-label" for="welcome-first">First name</label>
+          <input type="text" id="welcome-first" autocomplete="given-name" required>
+        </div>
+        <div>
+          <label class="welcome-label" for="welcome-last">Last name</label>
+          <input type="text" id="welcome-last" autocomplete="family-name" required>
+        </div>
+      </div>
+      <div class="welcome-error" id="welcome-error">&nbsp;</div>
+      <div class="welcome-actions">
+        <button type="submit" class="action-btn primary">Begin questionnaire</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <header class="masthead">
   <div class="masthead-row">
@@ -1409,9 +1447,67 @@ function formatPhoneValue(raw) {
   });
 });
 
-load();
+const __loadSource = load();
 window.addEventListener('input', saveDraft);
 window.addEventListener('change', saveDraft);
+
+/* WELCOME MODAL: gate every brand-new visit behind a name prompt so the URL
+   gets stamped with their unique compressed-state token from question one. */
+(function () {
+  const modal     = document.getElementById('welcome-modal');
+  const form      = document.getElementById('welcome-form');
+  const firstEl   = document.getElementById('welcome-first');
+  const lastEl    = document.getElementById('welcome-last');
+  const errorEl   = document.getElementById('welcome-error');
+  const nameEl    = document.getElementById('q-name');
+  if (!modal || !form || !firstEl || !lastEl || !nameEl) return;
+
+  function showModal() {
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => firstEl.focus(), 50);
+  }
+  function hideModal() {
+    modal.hidden = true;
+    document.body.style.overflow = '';
+  }
+
+  /* Block ESC and backdrop clicks while the modal is up. */
+  modal.addEventListener('click', (e) => { if (e.target === modal) e.preventDefault(); });
+  document.addEventListener('keydown', (e) => {
+    if (!modal.hidden && e.key === 'Escape') { e.preventDefault(); firstEl.focus(); }
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const first = (firstEl.value || '').trim();
+    const last  = (lastEl.value  || '').trim();
+    if (!first || !last) {
+      errorEl.textContent = 'Both first and last name, please.';
+      (first ? lastEl : firstEl).focus();
+      return;
+    }
+    errorEl.innerHTML = '&nbsp;';
+    nameEl.value = first + ' ' + last;
+    /* Fire input on q-name so any listeners react, then stamp the URL. */
+    nameEl.dispatchEvent(new Event('input', { bubbles: true }));
+    saveDraft();
+    hideModal();
+    /* Drop focus onto the opening notes box so they can dive in. */
+    const notesEl = document.getElementById('q-notes');
+    if (notesEl) notesEl.focus();
+  });
+
+  /* Only show on a genuinely fresh visit — never if they already have a
+     ?s= state, a ?client= pre-fill, a localStorage draft, or a pre-typed
+     name (covers an embedded-iframe scenario). */
+  const params      = new URLSearchParams(location.search);
+  const hasState    = params.has('s');
+  const hasClient   = params.has('client');
+  const hasName     = !!(nameEl.value && nameEl.value.trim());
+  const isFreshLoad = (__loadSource === 'fresh') && !hasState && !hasClient && !hasName;
+  if (isFreshLoad) showModal();
+})();
 </script>
 
 </body>
