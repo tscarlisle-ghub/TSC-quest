@@ -68,22 +68,22 @@ a:hover { color: var(--accent-dark); }
 .masthead h1 {
   font-family: var(--font-trajan);
   font-weight: 700;
-  font-size: 30px;
-  letter-spacing: 0.10em;
+  font-size: 15px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink);
   margin: 0;
   line-height: 1;
 }
 .masthead-sub {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-style: normal;
-  font-size: 45px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-style: italic;
+  font-size: 58px;
+  letter-spacing: 0;
   color: var(--ink);
-  line-height: 1;
+  line-height: 1.05;
+  margin-top: 6px;
 }
 
 /* ── PAGE ───────────────────────────────────────────────────────────────── */
@@ -95,19 +95,18 @@ a:hover { color: var(--accent-dark); }
 }
 article {
   width: 100%;
-  max-width: 880px;
+  max-width: 1080px;
   position: relative;
 }
 
-/* ── SECTION HEADER (Tufte/TSC-BILLING pattern) ─────────────────────────── */
-section { position: relative; margin: 36px 0 28px; }
+/* ── SECTION HEADER ─ section-note in the LEFT margin with a hairline ───── */
+section { position: relative; margin: 40px 0 28px; }
 .section-header {
-  display: flex;
-  align-items: baseline;
-  gap: 18px;
-  flex-wrap: wrap;
-  margin-bottom: 22px;
+  position: relative;
+  padding-left: 320px;
+  margin-bottom: 26px;
 }
+.section-header h2 { display: block; }
 h2 {
   font-family: var(--font-ui);
   font-weight: 700;
@@ -119,20 +118,32 @@ h2 {
   line-height: 1.1;
 }
 .section-note {
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 280px;
+  padding-right: 22px;
+  border-right: 1px solid var(--rule-soft);
+  text-align: right;
   font-family: var(--font-body);
   font-style: italic;
   font-size: 19px;
   color: var(--ink-soft);
-  line-height: 1.4;
+  line-height: 1.45;
 }
 .section-rule {
   border-top: 1px solid var(--rule);
   margin: 32px 0 0;
 }
 
-/* ── QUESTIONS ──────────────────────────────────────────────────────────── */
-.q { position: relative; margin-bottom: 24px; max-width: 580px; }
-.q + .q { margin-top: 24px; }
+/* ── QUESTIONS ─ sidenote in the LEFT margin with a hairline ─────────────── */
+.q {
+  position: relative;
+  margin-bottom: 28px;
+  padding-left: 320px;
+  max-width: 1080px;
+}
+.q + .q { margin-top: 28px; }
 .q-label {
   display: block;
   font-family: var(--font-ui);
@@ -156,30 +167,20 @@ h2 {
 }
 .q-label .req { color: var(--accent); margin-left: 3px; font-weight: normal; }
 
-/* Tufte sidenote — right margin on wide screens */
+/* Sidenote — pinned to the LEFT margin on wide screens, with a hairline */
 .sidenote {
-  display: block;
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 280px;
+  padding-right: 22px;
+  border-right: 1px solid var(--rule-soft);
+  text-align: right;
   font-family: var(--font-body);
   font-style: italic;
   color: var(--ink-soft);
   font-size: 17px;
   line-height: 1.5;
-  margin: -2px 0 10px;
-  padding-left: 14px;
-  border-left: 2px solid var(--rule-soft);
-}
-@media (min-width: 1024px) {
-  .sidenote {
-    position: absolute;
-    left: 620px;
-    width: 280px;
-    margin: 2px 0 0;
-    padding-left: 0;
-    border-left: none;
-    font-size: 17px;
-    line-height: 1.5;
-    color: var(--ink-soft);
-  }
 }
 
 /* ── FIELDS ─────────────────────────────────────────────────────────────── */
@@ -188,11 +189,11 @@ input[type="text"], input[type="email"], input[type="tel"], input[type="url"], i
   background: var(--field-bg);
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: 20px;
+  font-size: 24px;
   line-height: 1.45;
   border: none;
   border-bottom: 1px solid var(--ink-soft);
-  padding: 8px 4px 6px;
+  padding: 10px 6px 8px;
   border-radius: 0;
   outline: none;
   -webkit-appearance: none;
@@ -207,12 +208,16 @@ input::placeholder, textarea::placeholder {
   color: var(--ink-faint);
   font-style: italic;
 }
+/* Hide the example text the moment the user clicks/focuses a field */
+input:focus::placeholder,
+textarea:focus::placeholder { color: transparent; }
 textarea {
-  min-height: 110px;
+  min-height: 130px;
   resize: vertical;
   border: 1px solid var(--rule);
-  padding: 12px 14px;
+  padding: 14px 18px;
   background: var(--field-bg);
+  font-size: 22px;
   line-height: 1.55;
 }
 textarea:focus { border-color: var(--accent); background: var(--highlight); }
@@ -226,15 +231,12 @@ select {
 }
 
 .notes-box {
-  min-height: 220px;
-  font-size: 21px;
+  min-height: 260px;
+  font-size: 24px;
   line-height: 1.6;
   border: 1px solid var(--ink-soft);
-  padding: 14px 16px;
+  padding: 18px 22px;
 }
-/* Wide question wrapper — used by Opening Notes so the textarea spans
-   the full content column instead of the standard 580px field width. */
-.q.q-wide { max-width: 880px; }
 
 /* ── ROWS ───────────────────────────────────────────────────────────────── */
 .row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
@@ -244,10 +246,10 @@ select {
 .chips { display: flex; flex-wrap: wrap; gap: 0; margin-top: 4px; }
 .chip {
   font-family: var(--font-body);
-  font-size: 19px;
+  font-size: 22px;
   color: var(--ink-soft);
-  padding: 6px 14px 6px 0;
-  margin-right: 18px;
+  padding: 7px 16px 7px 0;
+  margin-right: 22px;
   cursor: pointer;
   border: none;
   background: none;
@@ -280,13 +282,13 @@ select {
 .style-title {
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: 20px;
+  font-size: 23px;
   color: var(--ink);
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 }
 .style-desc {
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 19px;
   color: var(--ink-soft);
   font-style: italic;
   line-height: 1.45;
@@ -297,9 +299,9 @@ select {
 @media (max-width: 720px) { .spaces { grid-template-columns: 1fr 1fr; } }
 .space {
   font-family: var(--font-body);
-  font-size: 18px;
+  font-size: 21px;
   color: var(--ink-soft);
-  padding: 4px 0;
+  padding: 5px 0;
   cursor: pointer;
 }
 .space:hover { color: var(--ink); }
@@ -312,9 +314,9 @@ select {
 .budget { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 6px 24px; }
 .budget-item {
   font-family: var(--font-body);
-  font-size: 20px;
+  font-size: 24px;
   color: var(--ink-soft);
-  padding: 6px 0;
+  padding: 7px 0;
   cursor: pointer;
   border-bottom: 1px solid transparent;
 }
@@ -378,18 +380,72 @@ footer {
 }
 footer .accent { color: var(--accent); }
 
+/* ── CALLOUT — used to highlight the cost-estimator link in §Budget ─────── */
+.q-callout {
+  margin: 4px 0 32px;
+  padding: 16px 22px;
+  background: var(--paper-2);
+  border-left: 3px solid var(--accent);
+  font-family: var(--font-body);
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--ink);
+  max-width: 760px;
+  margin-left: 320px;
+}
+.q-callout strong { font-weight: 700; }
+.q-callout em { font-style: italic; }
+.q-callout a {
+  color: var(--accent);
+  font-weight: 600;
+  border-bottom: 1px solid var(--accent);
+}
+.q-callout a:hover { color: var(--accent-dark); border-bottom-color: var(--accent-dark); }
+
+/* ── MOBILE / NARROW: collapse marginalia to inline ─────────────────────── */
+@media (max-width: 1023px) {
+  .section-header { padding-left: 0; }
+  .section-note {
+    position: static;
+    width: auto;
+    text-align: left;
+    padding-right: 0;
+    padding-left: 14px;
+    border-right: none;
+    border-left: 2px solid var(--rule-soft);
+    margin: 8px 0 0;
+  }
+  .q { padding-left: 0; }
+  .sidenote {
+    position: static;
+    width: auto;
+    text-align: left;
+    padding-right: 0;
+    padding-left: 14px;
+    border-right: none;
+    border-left: 2px solid var(--rule-soft);
+    margin: 4px 0 10px;
+  }
+  .q-callout { margin-left: 0; }
+}
+
 @media print {
   body { font-size: 11pt; background: #fff; }
   .action-row, .action-status, footer, .masthead { display: none; }
   section { page-break-inside: avoid; }
-  .sidenote { position: static !important; width: auto; padding-left: 12px; border-left: 2px solid #aaa; }
+  .section-header { padding-left: 0; }
+  .section-note { position: static !important; width: auto; text-align: left; padding-left: 12px; padding-right: 0; border-right: none; border-left: 2px solid #aaa; margin-top: 4px; }
+  .q { padding-left: 0 !important; }
+  .sidenote { position: static !important; width: auto; padding-right: 0; padding-left: 12px; text-align: left; border-right: none; border-left: 2px solid #aaa; margin: 4px 0 8px; }
+  .q-callout { margin-left: 0; }
 }
 @media (max-width: 720px) {
   .masthead-row, .page { padding-left: 22px; padding-right: 22px; }
-  .masthead h1 { font-size: 22px; }
-  .masthead-sub { font-size: 16px; }
-  body { font-size: 16px; }
-  h2 { font-size: 18px; }
+  .masthead h1 { font-size: 22px; letter-spacing: 0.06em; }
+  .masthead-sub { font-size: 32px; }
+  body { font-size: 18px; }
+  h2 { font-size: 22px; }
+  input[type="text"], input[type="email"], input[type="tel"], input[type="url"], input[type="number"], select, textarea { font-size: 20px; }
 }
 </style>
 </head>
@@ -462,24 +518,6 @@ footer .accent { color: var(--accent); }
       <span class="sidenote">Street address if known, otherwise neighborhood or general area.</span>
       <input type="text" id="q-address" placeholder="Address or general area">
     </div>
-    <div class="q">
-      <label class="q-label" for="q-referral">How did you find us?</label>
-      <select id="q-referral">
-        <option value="">— Select —</option>
-        <option>Referred by a friend or colleague</option>
-        <option>A project of yours we admired</option>
-        <option>Instagram or social media</option>
-        <option>Website</option>
-        <option>Houzz or other platform</option>
-        <option>Builder referral</option>
-        <option>Other</option>
-      </select>
-    </div>
-    <div class="q">
-      <label class="q-label" for="q-referral-detail">Referral details <span class="opt">(if applicable)</span></label>
-      <span class="sidenote">If someone sent you our way, we'd love to know who to thank.</span>
-      <input type="text" id="q-referral-detail" placeholder="Name or other context">
-    </div>
   </section>
 
   <div class="section-rule"></div>
@@ -550,13 +588,23 @@ footer .accent { color: var(--accent); }
     </div>
     <div class="q">
       <label class="q-label" for="q-builder">Builder <span class="opt">(name and status)</span></label>
-      <span class="sidenote">Already chosen? A few in mind? Need recommendations? Tell us.</span>
+      <span class="sidenote">Already chosen? A few in mind? Need recommendations? Don't plan to use one?</span>
       <input type="text" id="q-builder" placeholder="e.g. Talking to Doster and Dunn">
     </div>
     <div class="q">
-      <label class="q-label" for="q-prevarch">Worked with another architect on this project?</label>
-      <span class="sidenote">If yes, tell us what worked, what didn't, and what you're hoping to do differently.</span>
-      <textarea id="q-prevarch" placeholder="Optional, but helpful..."></textarea>
+      <label class="q-label" for="q-interior-designer">Interior designer <span class="opt">(name and status)</span></label>
+      <span class="sidenote">Already chosen? A few in mind? Need recommendations? Don't plan to use one?</span>
+      <input type="text" id="q-interior-designer" placeholder="e.g. Already working with Suzanne Kasler">
+    </div>
+    <div class="q">
+      <label class="q-label" for="q-landscape-architect">Landscape architect <span class="opt">(name and status)</span></label>
+      <span class="sidenote">Already chosen? A few in mind? Need recommendations? Don't plan to use one?</span>
+      <input type="text" id="q-landscape-architect" placeholder="e.g. Need recommendations">
+    </div>
+    <div class="q">
+      <label class="q-label" for="q-sustainability">Energy and sustainability priorities</label>
+      <span class="sidenote">Solar, geothermal, EV charging, passive design, certified rating &mdash; non-negotiable, nice-to-have, or just curious?</span>
+      <textarea id="q-sustainability" placeholder="EV charging is a must; would consider solar if payback makes sense..."></textarea>
     </div>
   </section>
 
@@ -587,8 +635,13 @@ footer .accent { color: var(--accent); }
     </div>
     <div class="q">
       <label class="q-label" for="q-references">Homes, places, or rooms you admire</label>
-      <span class="sidenote">Specific houses, architects, neighborhoods, hotels. Pinterest links welcome.</span>
+      <span class="sidenote">Specific houses, architects, neighborhoods, hotels.</span>
       <textarea id="q-references" placeholder="The Lutyens country houses..."></textarea>
+    </div>
+    <div class="q">
+      <label class="q-label" for="q-imagery">Imagery you've collected</label>
+      <span class="sidenote">Pinterest boards, Instagram saves, a folder of photos, magazine clippings &mdash; share links or names of boards we should look at.</span>
+      <textarea id="q-imagery" placeholder="https://www.pinterest.com/...&#10;@account_we_follow on Instagram&#10;A Dropbox folder, Google Drive, etc."></textarea>
     </div>
     <div class="q">
       <label class="q-label" for="q-avoid">What to avoid</label>
@@ -676,6 +729,16 @@ footer .accent { color: var(--accent); }
       <span class="sidenote">Dog wash, gun safe, wine collection, library shelving, specific closets.</span>
       <textarea id="q-storage" placeholder="Large book collection — built-in shelving in multiple rooms..."></textarea>
     </div>
+    <div class="q">
+      <label class="q-label" for="q-heirlooms">Pieces this house needs to accommodate</label>
+      <span class="sidenote">Significant furniture, art, library, piano, an inherited hutch &mdash; anything dimensional we should design around.</span>
+      <textarea id="q-heirlooms" placeholder="Grand piano, family dining table that seats 12..."></textarea>
+    </div>
+    <div class="q">
+      <label class="q-label" for="q-aging">Long-term horizon</label>
+      <span class="sidenote">Planning to age in place? Anyone with mobility considerations now or expected? Informs primary-floor program, hallway widths, threshold heights.</span>
+      <textarea id="q-aging" placeholder="My mother lives with us part of the year and has mobility issues..."></textarea>
+    </div>
   </section>
 
   <div class="section-rule"></div>
@@ -708,6 +771,11 @@ footer .accent { color: var(--accent); }
     <div class="section-header">
       <h2>Budget &amp; Timeline</h2>
       <span class="section-note">we believe in transparency about money &mdash; the more honest you can be, the better we can serve you</span>
+    </div>
+    <div class="q-callout">
+      Want to explore budget vs. size before this conversation? Try our
+      <a href="https://tscarlisle-ghub.github.io/TSC-SQF/" target="_blank" rel="noopener">cost estimator</a>.
+      <strong>Be sure to enter your name at the top</strong> so we can match your version to this questionnaire.
     </div>
     <div class="q">
       <label class="q-label">Target construction budget</label>
@@ -834,8 +902,6 @@ function collect() {
     partner_email: val('q-partner-email'),
     partner_phone: val('q-partner-phone'),
     address: val('q-address'),
-    referral: val('q-referral'),
-    referral_detail: val('q-referral-detail'),
     household: val('q-household'),
     rhythm: val('q-rhythm'),
     lifestyle: checks('#lifestyle-chips'),
@@ -843,10 +909,13 @@ function collect() {
     sqft: val('q-sqft'),
     stories: radio('stories'),
     builder: val('q-builder'),
-    prior_architect: val('q-prevarch'),
+    interior_designer: val('q-interior-designer'),
+    landscape_architect: val('q-landscape-architect'),
+    sustainability: val('q-sustainability'),
     style_cards: styleCards,
     style_words: val('q-style-words'),
     references: val('q-references'),
+    imagery: val('q-imagery'),
     avoid: val('q-avoid'),
     bedrooms: val('q-bedrooms'),
     primary_bedroom: val('q-primary'),
@@ -854,6 +923,8 @@ function collect() {
     spaces: checks('#spaces'),
     key_spaces: val('q-key-spaces'),
     storage: val('q-storage'),
+    heirlooms: val('q-heirlooms'),
+    aging: val('q-aging'),
     site_best: val('q-site-best'),
     site_worst_and_constraints: val('q-site-worst'),
     arrival_and_outdoor: val('q-arrival'),
@@ -874,12 +945,16 @@ function apply(d) {
   setText('q-email', d.email); setText('q-phone', d.phone);
   setText('q-partner-email', d.partner_email); setText('q-partner-phone', d.partner_phone);
   setText('q-address', d.address);
-  setText('q-referral', d.referral); setText('q-referral-detail', d.referral_detail);
   setText('q-household', d.household); setText('q-rhythm', d.rhythm);
-  setText('q-sqft', d.sqft); setText('q-builder', d.builder); setText('q-prevarch', d.prior_architect);
-  setText('q-style-words', d.style_words); setText('q-references', d.references); setText('q-avoid', d.avoid);
+  setText('q-sqft', d.sqft); setText('q-builder', d.builder);
+  setText('q-interior-designer', d.interior_designer);
+  setText('q-landscape-architect', d.landscape_architect);
+  setText('q-sustainability', d.sustainability);
+  setText('q-style-words', d.style_words); setText('q-references', d.references);
+  setText('q-imagery', d.imagery); setText('q-avoid', d.avoid);
   setText('q-bedrooms', d.bedrooms); setText('q-primary', d.primary_bedroom);
   setText('q-key-spaces', d.key_spaces); setText('q-storage', d.storage);
+  setText('q-heirlooms', d.heirlooms); setText('q-aging', d.aging);
   setText('q-site-best', d.site_best); setText('q-site-worst', d.site_worst_and_constraints);
   setText('q-arrival', d.arrival_and_outdoor); setText('q-start', d.construction_start);
   setText('q-movein', d.target_movein); setText('q-priority', d.priority);
@@ -963,9 +1038,9 @@ function asMarkdown(d) {
   if (d.notes && d.notes.trim()) out += `OPENING NOTES\n${d.notes.trim()}\n\n`;
   out += `CONTACT\n` + line('Name', d.name) + line('Partner', d.partner) + line('Email', d.email) + line('Phone', d.phone) + line('Partner email', d.partner_email) + line('Partner phone', d.partner_phone) + line('Location', d.address);
   out += `\nLIFE\n` + line('Household', d.household) + line('Weekly rhythm', d.rhythm) + line('Lifestyle', d.lifestyle);
-  out += `\nPROJECT\n` + line('Type', d.project_type) + line('Sqft', d.sqft) + line('Stories', d.stories) + line('Builder', d.builder) + line('Prior architect', d.prior_architect);
-  out += `\nCHARACTER\n` + line('Styles', d.style_cards) + line('In their words', d.style_words) + line('References', d.references) + line('Avoid', d.avoid);
-  out += `\nSPACES\n` + line('Bedrooms', d.bedrooms) + line('Primary', d.primary_bedroom) + line('Bathrooms', d.bathrooms) + line('Spaces', d.spaces) + line('Key spaces', d.key_spaces) + line('Storage', d.storage);
+  out += `\nPROJECT\n` + line('Type', d.project_type) + line('Sqft', d.sqft) + line('Stories', d.stories) + line('Builder', d.builder) + line('Interior designer', d.interior_designer) + line('Landscape architect', d.landscape_architect) + line('Sustainability', d.sustainability);
+  out += `\nCHARACTER\n` + line('Styles', d.style_cards) + line('In their words', d.style_words) + line('References', d.references) + line('Imagery', d.imagery) + line('Avoid', d.avoid);
+  out += `\nSPACES\n` + line('Bedrooms', d.bedrooms) + line('Primary', d.primary_bedroom) + line('Bathrooms', d.bathrooms) + line('Spaces', d.spaces) + line('Key spaces', d.key_spaces) + line('Storage', d.storage) + line('Heirlooms', d.heirlooms) + line('Aging-in-place', d.aging);
   out += `\nSITE\n` + line('Best', d.site_best) + line('Challenges', d.site_worst_and_constraints) + line('Arrival/outdoor', d.arrival_and_outdoor);
   out += `\nBUDGET & TIMELINE\n` + line('Budget', d.budget) + line('Start', d.construction_start) + line('Move-in', d.target_movein);
   out += `\nLAST THOUGHTS\n` + line('Priority', d.priority) + line('Concerns', d.concerns) + line('Feeling', d.feeling) + line('Other', d.other);
@@ -1046,6 +1121,26 @@ function downloadJSON() {
 document.getElementById('email-btn').addEventListener('click', sendToScott);
 document.getElementById('share-btn').addEventListener('click', copyShareLink);
 document.getElementById('download-btn').addEventListener('click', downloadJSON);
+
+/* ═══════════════════════════════════════════════════════════════════════
+   AUTO-FORMAT PHONE NUMBERS as the user types — (XXX) XXX-XXXX
+   ═══════════════════════════════════════════════════════════════════════ */
+function formatPhoneValue(raw) {
+  const d = (raw || '').replace(/\D/g, '').slice(0, 10);
+  if (d.length === 0) return '';
+  if (d.length <= 3) return '(' + d;
+  if (d.length <= 6) return '(' + d.slice(0, 3) + ') ' + d.slice(3);
+  return '(' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6);
+}
+['q-phone', 'q-partner-phone'].forEach(id => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('input', () => {
+    const before = el.value;
+    const formatted = formatPhoneValue(before);
+    if (formatted !== before) el.value = formatted;
+  });
+});
 
 load();
 window.addEventListener('input', saveDraft);
