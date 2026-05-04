@@ -529,6 +529,7 @@ footer .accent { color: var(--accent); }
 .welcome-lede { font-style: italic; color: var(--ink-soft); margin: 0 0 18px; font-size: 17px; line-height: 1.45; }
 .welcome-body { font-size: 17px; line-height: 1.55; color: var(--ink); margin: 0 0 22px; }
 .welcome-row { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 8px; }
+.welcome-field { margin-bottom: 8px; }
 .welcome-label { display: block; font-family: var(--font-ui); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 4px; }
 .welcome-card input[type="text"] { width: 100%; font-family: var(--font-body); font-size: 19px; padding: 8px 0; border: none; border-bottom: 1px solid var(--ink-soft); background: transparent; color: var(--ink); border-radius: 0; }
 .welcome-card input[type="text"]:focus { outline: none; border-bottom: 2px solid var(--accent); }
@@ -545,15 +546,9 @@ footer .accent { color: var(--accent); }
     <p class="welcome-lede">Before we begin &mdash; just your name, so this becomes <em>your</em> questionnaire.</p>
     <p class="welcome-body">From this point on, your answers save automatically to a unique link in the address bar. You can close this tab and come back anytime; just keep the link. <em>This is only a starting point</em> &mdash; we'll fill in the rest of the picture together.</p>
     <form id="welcome-form" novalidate>
-      <div class="welcome-row">
-        <div>
-          <label class="welcome-label" for="welcome-first">First name</label>
-          <input type="text" id="welcome-first" autocomplete="given-name" required>
-        </div>
-        <div>
-          <label class="welcome-label" for="welcome-last">Last name</label>
-          <input type="text" id="welcome-last" autocomplete="family-name" required>
-        </div>
+      <div class="welcome-field">
+        <label class="welcome-label" for="welcome-name">Your name</label>
+        <input type="text" id="welcome-name" autocomplete="name" maxlength="80" required>
       </div>
       <div class="welcome-error" id="welcome-error">&nbsp;</div>
       <div class="welcome-actions">
@@ -1451,21 +1446,43 @@ const __loadSource = load();
 window.addEventListener('input', saveDraft);
 window.addEventListener('change', saveDraft);
 
+/* Hard reset: blank every text input, textarea, select, radio, checkbox, and
+   peel the .selected class off every chip / style card / budget tile so a
+   genuinely fresh visit starts from zero, regardless of browser autofill. */
+function resetAllFields() {
+  const root = document.querySelector('article');
+  if (root) {
+    root.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="url"], input[type="number"], textarea').forEach(el => { el.value = ''; });
+    root.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(el => {
+      el.checked = false;
+      const label = el.closest('label');
+      if (label) label.classList.remove('selected');
+    });
+    root.querySelectorAll('select').forEach(s => { s.selectedIndex = 0; });
+    root.querySelectorAll('.style.selected').forEach(c => c.classList.remove('selected'));
+  }
+  const mapLink = document.getElementById('q-address-map');
+  if (mapLink) mapLink.hidden = true;
+}
+
 /* WELCOME MODAL: gate every brand-new visit behind a name prompt so the URL
    gets stamped with their unique compressed-state token from question one. */
 (function () {
-  const modal     = document.getElementById('welcome-modal');
-  const form      = document.getElementById('welcome-form');
-  const firstEl   = document.getElementById('welcome-first');
-  const lastEl    = document.getElementById('welcome-last');
-  const errorEl   = document.getElementById('welcome-error');
-  const nameEl    = document.getElementById('q-name');
-  if (!modal || !form || !firstEl || !lastEl || !nameEl) return;
+  const modal    = document.getElementById('welcome-modal');
+  const form     = document.getElementById('welcome-form');
+  const inputEl  = document.getElementById('welcome-name');
+  const errorEl  = document.getElementById('welcome-error');
+  const nameEl   = document.getElementById('q-name');
+  if (!modal || !form || !inputEl || !nameEl) return;
 
   function showModal() {
+    /* Always start the modal field empty too, so prior browser autofill
+       or a stale value from a different visitor is wiped. */
+    inputEl.value = '';
+    errorEl.innerHTML = '&nbsp;';
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
-    setTimeout(() => firstEl.focus(), 50);
+    setTimeout(() => inputEl.focus(), 50);
   }
   function hideModal() {
     modal.hidden = true;
@@ -1475,20 +1492,19 @@ window.addEventListener('change', saveDraft);
   /* Block ESC and backdrop clicks while the modal is up. */
   modal.addEventListener('click', (e) => { if (e.target === modal) e.preventDefault(); });
   document.addEventListener('keydown', (e) => {
-    if (!modal.hidden && e.key === 'Escape') { e.preventDefault(); firstEl.focus(); }
+    if (!modal.hidden && e.key === 'Escape') { e.preventDefault(); inputEl.focus(); }
   });
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    const first = (firstEl.value || '').trim();
-    const last  = (lastEl.value  || '').trim();
-    if (!first || !last) {
-      errorEl.textContent = 'Both first and last name, please.';
-      (first ? lastEl : firstEl).focus();
+    const name = (inputEl.value || '').trim();
+    if (!name) {
+      errorEl.textContent = 'Please enter a name to begin.';
+      inputEl.focus();
       return;
     }
     errorEl.innerHTML = '&nbsp;';
-    nameEl.value = first + ' ' + last;
+    nameEl.value = name;
     /* Fire input on q-name so any listeners react, then stamp the URL. */
     nameEl.dispatchEvent(new Event('input', { bubbles: true }));
     saveDraft();
@@ -1506,7 +1522,13 @@ window.addEventListener('change', saveDraft);
   const hasClient   = params.has('client');
   const hasName     = !!(nameEl.value && nameEl.value.trim());
   const isFreshLoad = (__loadSource === 'fresh') && !hasState && !hasClient && !hasName;
-  if (isFreshLoad) showModal();
+  if (isFreshLoad) {
+    /* Wipe any leftover autofill / partial state behind the modal so the
+       new visitor lands on a clean slate the moment they click Begin. */
+    resetAllFields();
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+    showModal();
+  }
 })();
 </script>
 
