@@ -521,45 +521,27 @@ footer .accent { color: var(--accent); }
   h2 { font-size: 22px; }
   input[type="text"], input[type="email"], input[type="tel"], input[type="url"], input[type="number"], select, textarea { font-size: 20px; }
 }
-.welcome-modal { position: fixed; inset: 0; z-index: 1000; background: rgba(20,18,14,0.55); display: flex; align-items: center; justify-content: center; padding: 24px; font-family: var(--font-body); animation: welcome-fade-in 0.18s ease-out; }
-.welcome-modal[hidden] { display: none; }
-@keyframes welcome-fade-in { from { opacity: 0; } to { opacity: 1; } }
-.welcome-card { background: var(--paper); border: 1px solid var(--ink); max-width: 540px; width: 100%; padding: 36px 40px 30px; box-shadow: 0 14px 40px rgba(0,0,0,0.28); }
-.welcome-card h2 { font-family: var(--font-trajan); font-size: 26px; letter-spacing: 0.04em; text-transform: uppercase; margin: 0 0 8px; color: var(--ink); border-bottom: none; padding-bottom: 0; }
-.welcome-lede { font-style: italic; color: var(--ink-soft); margin: 0 0 18px; font-size: 17px; line-height: 1.45; }
-.welcome-body { font-size: 17px; line-height: 1.55; color: var(--ink); margin: 0 0 22px; }
-.welcome-row { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 8px; }
-.welcome-label { display: block; font-family: var(--font-ui); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 4px; }
-.welcome-card input[type="text"] { width: 100%; font-family: var(--font-body); font-size: 19px; padding: 8px 0; border: none; border-bottom: 1px solid var(--ink-soft); background: transparent; color: var(--ink); border-radius: 0; }
-.welcome-card input[type="text"]:focus { outline: none; border-bottom: 2px solid var(--accent); }
-.welcome-error { color: var(--accent); font-style: italic; font-size: 14px; min-height: 20px; margin: 6px 0 8px; }
-.welcome-actions { display: flex; justify-content: flex-end; margin-top: 6px; }
-@media (max-width: 520px) { .welcome-card { padding: 28px 22px 22px; } .welcome-row { grid-template-columns: 1fr; gap: 14px; } .welcome-card h2 { font-size: 22px; } }
+.project-modal { position: fixed; inset: 0; z-index: 100; background: rgba(251, 250, 246, 0.92); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; padding: 24px; }
+.project-modal[hidden] { display: none; }
+.project-modal-card { background: var(--paper); border: 1px solid var(--ink); border-radius: 1px; padding: 36px 40px 32px; max-width: 520px; width: 100%; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06); }
+.project-modal-card h2 { font-family: var(--font-display); font-size: 26px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink); margin: 0 0 14px; border-bottom: none; padding-bottom: 0; }
+.project-modal-card p { font-family: var(--font-body); font-size: 14px; color: var(--ink-soft); margin: 0 0 22px; line-height: 1.5; }
+.project-modal-card input { width: 100%; font-family: var(--font-body); font-size: 17px; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 1px; background: #fff; outline: none; margin-bottom: 18px; color: var(--ink); }
+.project-modal-card input:focus { border-color: var(--accent); }
+.project-modal-card button { font-family: var(--font-ui); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; padding: 9px 18px; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); cursor: pointer; transition: opacity 0.15s; }
+.project-modal-card button:hover:not(:disabled) { opacity: 0.85; }
+.project-modal-card button:disabled { background: #fff; color: var(--ink-faint); border-color: var(--rule); cursor: not-allowed; }
+@media (max-width: 520px) { .project-modal-card { padding: 28px 22px 22px; } .project-modal-card h2 { font-size: 22px; } }
 </style>
 </head>
 <body>
 
-<div id="welcome-modal" class="welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-title" hidden>
-  <div class="welcome-card">
-    <h2 id="welcome-title">Carlisle Moore Architects</h2>
-    <p class="welcome-lede">Before we begin &mdash; just your name, so this becomes <em>your</em> questionnaire.</p>
-    <p class="welcome-body">From this point on, your answers save automatically to a unique link in the address bar. You can close this tab and come back anytime; just keep the link. <em>This is only a starting point</em> &mdash; we'll fill in the rest of the picture together.</p>
-    <form id="welcome-form" novalidate>
-      <div class="welcome-row">
-        <div>
-          <label class="welcome-label" for="welcome-first">First name</label>
-          <input type="text" id="welcome-first" autocomplete="given-name" required>
-        </div>
-        <div>
-          <label class="welcome-label" for="welcome-last">Last name</label>
-          <input type="text" id="welcome-last" autocomplete="family-name" required>
-        </div>
-      </div>
-      <div class="welcome-error" id="welcome-error">&nbsp;</div>
-      <div class="welcome-actions">
-        <button type="submit" class="action-btn primary">Begin questionnaire</button>
-      </div>
-    </form>
+<div id="projectModal" class="project-modal" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle" hidden>
+  <div class="project-modal-card">
+    <h2 id="projectModalTitle">Name this questionnaire</h2>
+    <p>Add a name so this questionnaire can be saved, shared, and returned to later. You can edit it any time afterwards.</p>
+    <input id="projectModalInput" type="text" placeholder="e.g. Smith Residence &mdash; Mountain Brook" maxlength="80" autocomplete="off">
+    <button id="projectModalContinue" type="button" disabled>Continue</button>
   </div>
 </div>
 
@@ -1447,67 +1429,55 @@ function formatPhoneValue(raw) {
   });
 });
 
-const __loadSource = load();
+load();
 window.addEventListener('input', saveDraft);
 window.addEventListener('change', saveDraft);
 
-/* WELCOME MODAL: gate every brand-new visit behind a name prompt so the URL
-   gets stamped with their unique compressed-state token from question one. */
-(function () {
-  const modal     = document.getElementById('welcome-modal');
-  const form      = document.getElementById('welcome-form');
-  const firstEl   = document.getElementById('welcome-first');
-  const lastEl    = document.getElementById('welcome-last');
-  const errorEl   = document.getElementById('welcome-error');
-  const nameEl    = document.getElementById('q-name');
-  if (!modal || !form || !firstEl || !lastEl || !nameEl) return;
+/* PROJECT-NAME GATE — same pattern as TSC-SQF. Bypassed only when the URL
+   already carries a state token (?s=), since shared / returning links have
+   the name baked into the state. Otherwise: blocking modal, single name
+   field, Continue button stays disabled until something is typed. */
+const cameFromShareLink = (function () {
+  try { return new URLSearchParams(location.search).has('s'); }
+  catch (e) { return false; }
+})();
 
-  function showModal() {
-    modal.hidden = false;
-    document.body.style.overflow = 'hidden';
-    setTimeout(() => firstEl.focus(), 50);
-  }
-  function hideModal() {
-    modal.hidden = true;
-    document.body.style.overflow = '';
-  }
+function showProjectModal() {
+  const modal  = document.getElementById('projectModal');
+  const input  = document.getElementById('projectModalInput');
+  const button = document.getElementById('projectModalContinue');
+  if (!modal || !input || !button) return;
 
-  /* Block ESC and backdrop clicks while the modal is up. */
-  modal.addEventListener('click', (e) => { if (e.target === modal) e.preventDefault(); });
-  document.addEventListener('keydown', (e) => {
-    if (!modal.hidden && e.key === 'Escape') { e.preventDefault(); firstEl.focus(); }
-  });
+  /* Always start empty — never pre-fill from prior state. */
+  input.value = '';
+  modal.hidden = false;
+  setTimeout(() => input.focus(), 50);
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const first = (firstEl.value || '').trim();
-    const last  = (lastEl.value  || '').trim();
-    if (!first || !last) {
-      errorEl.textContent = 'Both first and last name, please.';
-      (first ? lastEl : firstEl).focus();
-      return;
+  function checkValid() { button.disabled = input.value.trim().length === 0; }
+  input.addEventListener('input', checkValid);
+  checkValid();
+
+  function commit() {
+    const name = input.value.trim();
+    if (!name) return;
+    const nameEl = document.getElementById('q-name');
+    if (nameEl) {
+      nameEl.value = name;
+      nameEl.dispatchEvent(new Event('input', { bubbles: true }));
     }
-    errorEl.innerHTML = '&nbsp;';
-    nameEl.value = first + ' ' + last;
-    /* Fire input on q-name so any listeners react, then stamp the URL. */
-    nameEl.dispatchEvent(new Event('input', { bubbles: true }));
+    modal.hidden = true;
     saveDraft();
-    hideModal();
-    /* Drop focus onto the opening notes box so they can dive in. */
     const notesEl = document.getElementById('q-notes');
     if (notesEl) notesEl.focus();
-  });
+  }
 
-  /* Only show on a genuinely fresh visit — never if they already have a
-     ?s= state, a ?client= pre-fill, a localStorage draft, or a pre-typed
-     name (covers an embedded-iframe scenario). */
-  const params      = new URLSearchParams(location.search);
-  const hasState    = params.has('s');
-  const hasClient   = params.has('client');
-  const hasName     = !!(nameEl.value && nameEl.value.trim());
-  const isFreshLoad = (__loadSource === 'fresh') && !hasState && !hasClient && !hasName;
-  if (isFreshLoad) showModal();
-})();
+  button.addEventListener('click', commit);
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); commit(); }
+  });
+}
+
+if (!cameFromShareLink) showProjectModal();
 </script>
 
 </body>
